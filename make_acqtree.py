@@ -4,6 +4,10 @@ import argparse
 import MDSplus
 import os
 
+def new_shot(tree):
+    MDSplus.Tree.setCurrent(tree, 1)
+    MDSplus.Tree(tree, -1).createPulse(1)
+
 def make_chan(tree, nchan, id):
     subdir = tree.addNode(".{}".format(id))
     chfmt = "CH{:0" + "{}".format('3' if nchan > 99 else '2') + "}"
@@ -20,6 +24,8 @@ def path_check(tname):
         print("run as root:")
         print('echo "{} {}" >> {}'.
 		format(key, tpath, "/usr/local/mdsplus/local/envsyms"))
+        print("# for immediate use:")
+        print("export {}={}".format(key, tpath))
 	exit(1)
     
     if not os.path.exists(root):
@@ -47,7 +53,7 @@ def make_acqtree(args):
     if args.stat > 0:
         make_chan(tree, args.stat, "ST")
     tree.write()
-
+    new_shot(tname)
 
 def run_main():
     parser = argparse.ArgumentParser(description="make_acqtree")
