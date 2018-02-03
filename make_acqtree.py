@@ -26,6 +26,7 @@ def path_check(tname):
 		format(key, tpath, "/usr/local/mdsplus/local/envsyms"))
         print("# for immediate use:")
         print("export {}={}".format(key, tpath))
+	print("then run the command again please")
 	exit(1)
     
     if not os.path.exists(root):
