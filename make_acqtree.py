@@ -10,7 +10,8 @@ def new_shot(tree):
 
 def make_chan(tree, nchan, id):
     if nchan == 0:
-        tree.addNode(".{}".format(id), "SIGNAL")
+        subdir = tree.addNode(".{}".format(id))
+        subdir.addNode(":RAW", "SIGNAL")
     else:
         subdir = tree.addNode(".{}".format(id))
         chfmt = "CH{:0" + "{}".format('3' if nchan > 99 else '2') + "}"
