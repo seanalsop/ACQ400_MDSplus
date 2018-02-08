@@ -56,6 +56,11 @@ def mds_put_slice(args):
         raw = np.fromfile(fp, dtype=eval(args.dtype))
     nsam = len(raw)/args.ncols
     cols = np.reshape(raw, (nsam, args.ncols))
+
+    if args.shr != 0:
+        cols = np.right_shift(cols, args.shr)
+
+
     
     tree = MDSplus.Tree(args.tree[0], 0)    
     iout = 1
@@ -78,6 +83,7 @@ def run_main():
     parser = argparse.ArgumentParser(description='mds_put_slice slice a data file and submit to MDSplus')
     parser.add_argument('--ncols', type=int, default=64, help="number of columns in data")
     parser.add_argument('--dtype', type=str, default='np.uint32', help="data type np.uint32, np.int16 etc")
+    parser.add_argument('--shr', type=int, default=0, help='right shift')
     parser.add_argument('--store_cols', default = ':', type=str, help="list of column indices to store")
     parser.add_argument('--node_name', type=str, help="node name %d format accepted")
     parser.add_argument('--default_node', type=str, help="default node")
