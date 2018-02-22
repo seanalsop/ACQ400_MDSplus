@@ -38,6 +38,8 @@ def do_tlatch_report(tla, verbose):
         
     if errors:
         print("SUMMARY: errors %d maxerr %d" % (errors, errmax))
+    ll = len(tla)
+    return np.concatenate((np.subtract(tla[1:ll], tla[0:ll-1]), [1]))
                 
                 
 def mds_put_slice(args):
@@ -64,6 +66,9 @@ def mds_put_slice(args):
     
     tree = MDSplus.Tree(args.tree[0], 0)    
     iout = 1
+    if args.tlatch_report:
+        cols[:,1] = do_tlatch_report(cols[:,store_cols[0]], args.tlatch_report)
+
     for sc in store_cols:
         node_name = args.node_name % (iout)
         if args.default_node:
@@ -71,12 +76,12 @@ def mds_put_slice(args):
         else:
             node = tree.getNode(node_name)
         node.putData(cols[:,sc])
+	if args.tlatch_report and sc==1:
+            print("Node {} is delta tlatch".format(node_name))
         iout += 1
     print("MDSplus.Event.setevent({}, 42)".format(args.tree[0]))
     MDSplus.Event.setevent(args.tree[0])
 
-    if args.tlatch_report:
-        do_tlatch_report(cols[:,store_cols[0]], args.tlatch_report)
 
 
 def run_main():
