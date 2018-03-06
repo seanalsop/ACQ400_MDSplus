@@ -26,7 +26,9 @@ def do_tlatch_report(tla, verbose):
     t0 = 0;
     errors = 0
     errmax = 0
-    
+   
+    if verbose:
+        print("do_tlatch_report {}".format(tla)) 
     for tt in tla:
         if tt != t0+1:
             if verbose > 1:
@@ -47,17 +49,19 @@ def mds_put_slice(args):
 	store_cols = range(0, args.ncols)
     else:
         store_cols = eval('('+args.store_cols+', )')
-
-    try:
-        n_store = len(store_cols)
-    except TypeError:
-        print "TypeError add brackets"
-        store_cols = ( store_cols, )
+        try:
+            n_store = len(store_cols)
+        except TypeError:
+            print "TypeError add brackets"
+            store_cols = ( store_cols, )
         
     with open(args.file[0], 'r') as fp:
         raw = np.fromfile(fp, dtype=eval(args.dtype))
     nsam = len(raw)/args.ncols
-    cols = np.reshape(raw, (nsam, args.ncols))
+    print("mds_put_slice len {} ncols {} nsam {} nsam*ncols {}".
+		format(len(raw), args.ncols, nsam, nsam*args.ncols))
+
+    cols = np.reshape(raw[0:nsam*args.ncols], (nsam, args.ncols))
 
     if args.shr != 0:
         cols = np.right_shift(cols, args.shr)
