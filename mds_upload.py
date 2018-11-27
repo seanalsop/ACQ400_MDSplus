@@ -28,7 +28,6 @@ def upload_segment(segment, node, segID):
     delta = 1 / float((len(segment)))
     segment = Float32Array(segment)
     segDimension = Range(start_time, end_time, delta)
-    # print("seg params: ", start_time, end_time, segDimension, segment)
     node.makeSegment(start_time, end_time, segDimension, segment)
 
 
@@ -42,17 +41,13 @@ def upload_data(args):
     if args.store_seg == 1:
         directories = [name for name in os.listdir(args.data_dir) if os.path.isdir(os.path.join(args.data_dir, name))]
         for dir1 in directories:
-            #print dir1
             for file in os.listdir(args.data_dir + dir1):
-
-                data.extend(np.fromfile(args.data_dir + dir1 + "/" + file, dtype=np.int16))
+                data = np.fromfile(args.data_dir + dir1 + "/" + file, dtype=np.int16)
                 upload_segment(data, node, segID)
-                data = []
                 segID += 1
                 print "file uploaded"
 
 def run_upload(args):
-
     upload_data(args)
 
 
@@ -69,3 +64,4 @@ def run_main():
 
 if __name__ == '__main__':
     run_main()
+
