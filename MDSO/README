@@ -1,0 +1,12 @@
+# Notes on git:
+# local git is the master.
+# remote git on rhum4
+# 
+/home/peter/PROJECTS/RTM-T/FUNCTIONAL_TESTS/MDSOBJECTS
+[peter@rhum4 MDSOBJECTS]$ git checkout ootw
+Switched to branch 'ootw'
+# update
+git push ssh://peter@localhost:10007/home/peter/PROJECTS/RTM-T/FUNCTIONAL_TESTS/MDSOBJECTS +master
+# remote 
+git checkout master
+
