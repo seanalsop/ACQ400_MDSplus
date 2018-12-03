@@ -14,7 +14,8 @@ This mirrors the intended use of acq400_stream2.py (streaming to
 
 This will upload segments of size 1kb to the specified node in the tree.
 
-
+To upload to MDSplus on windows then use this to set path variable:
+    $env:mds_test_path="andros:://home/dt100/TREES/mds_test"
 """
 
 
