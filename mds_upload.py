@@ -31,12 +31,24 @@ def upload_segment(segment, node, segID):
     node.makeSegment(start_time, end_time, segDimension, segment)
 
 
+def upload_ch(data, node):
+    data = Float16Array(data)
+    node.putData(data)
+    return None
+
+
 def upload_data(args):
     # upload data to the MDSplus tree.
     segID = 0
     data = []
     tree = Tree(args.uuts[0], Tree.getCurrent(args.uuts[0]))
     node = tree.getNode(args.node)
+
+    if args.store_seg == 1 and args.store_chs == 1:
+        print "This is an incompatible argument selection. Please either choose \n"
+        "to store data in segments or to store by channel. To store by channel \n"
+        "the data must first be stored to disk by channel by host_demux.py \n"
+        return None
 
     if args.store_seg == 1:
         directories = [name for name in os.listdir(args.data_dir) if os.path.isdir(os.path.join(args.data_dir, name))]
@@ -47,17 +59,34 @@ def upload_data(args):
                 segID += 1
                 print "file uploaded"
 
+    if args.store_chs == 1:
+        list_of_dirs = os.listdir(args.data_dir)
+
+        for enum, channel in enumerate(list_of_dirs): # channel == file.
+            data = np.fromfile(str(args.data_dir) + "/" + channel, dtype=np.int16)
+            
+            if len(list_of_dirs) > 99
+                node = "CH" + "{:03d}".format(enum + 1)
+            else:
+                node = "CH" + "{:02d}".format(enum + 1)
+
+            node = tree.getNode(args.node + node)
+            upload_ch(data, node)
+            print "file uploaded"
+
+
 def run_upload(args):
     upload_data(args)
 
 
 def run_main():
     parser = argparse.ArgumentParser(description='acq400 MDSplus interface')
-    # parser.add_argument('-filesize', '--filesize', default=0x100000, action=acq400_hapi.intSIAction, decimal=False)
     parser.add_argument('--node', default="AI", type=str, help="Which node to pull data from")
     parser.add_argument('--store_seg', default=1, type=int, help="Whether to upload data as a segment or not.")
     parser.add_argument('--data_dir', default='/data/')
     parser.add_argument('--verbose', default=0, type=int, help='Prints status messages as the data is being pulled.')
+    parser.add_argument('--data_dir', default="AI", type=str, help="Which node to pull data from")
+    parser.add_argument('--store_chs', default=0, type=int, help="Whether to store channelized data to MDSplus.")
     parser.add_argument('uuts', nargs='+', help="uuts")
     run_upload(parser.parse_args())
 
