@@ -68,6 +68,8 @@ def upload_data(args):
         list_of_dirs = os.listdir(args.data_dir)
 
         for enum, channel in enumerate(list_of_dirs): # channel == file.
+            if channel == "format":
+                continue
             print "loop"
             data = np.fromfile(str(args.data_dir) + "/" + channel, dtype=np.int16)
 
