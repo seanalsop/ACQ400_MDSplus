@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import os
 from MDSplus import *
 
 idnames = ("MAG_%d", "phi_%d", "PWR_%d" )
@@ -8,9 +9,18 @@ idunits = ("V", "rad", "W")
 idcal   = ("7.109e-8", "1.8626e-9", "4.550e-6" )
 
 
+def run_make_acqtree(args):
+	return_val = os.system('python make_acqtree.py {}'.format(args.tree[0]))
+	if return_val != 0:
+		exit()
+	else:
+		return None
+
+
 def make_bolo_tree(args):
+	run_make_acqtree(args)
 	tree = Tree(args.tree[0], -1, "NEW")
-	
+
 	for site in range(1, args.bolo8_count+1):
 		bname = "BOLO%d" % (site)
 		module = tree.addNode(".%s" % (bname))
