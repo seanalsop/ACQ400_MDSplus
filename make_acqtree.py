@@ -27,7 +27,7 @@ def path_check(tname):
     mpath = os.getenv(key, "notfound")
     if mpath == "notfound":
         print("run as root:")
-        print('echo "{} {}" >> {}'.
+        print('echo "{} {}" | sudo tee -a {}'.
 		format(key, tpath, "/usr/local/mdsplus/local/envsyms"))
         print("# for immediate use:")
         print("export {}={}".format(key, tpath))
