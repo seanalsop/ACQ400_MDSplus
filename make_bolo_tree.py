@@ -40,7 +40,7 @@ def make_bolo_tree(args):
 
 def run_main():
 	parser = argparse.ArgumentParser(description="make_bolo_tree")
-	parser.add_argument('--bolo8_count', default=1, help = "number of bolo8 modules" )
+	parser.add_argument('--bolo8_count', default=1, type=int, help = "number of bolo8 modules" )
 	parser.add_argument('tree', nargs=1, help = "tree name")
 	make_bolo_tree(parser.parse_args())
 # execution starts here
