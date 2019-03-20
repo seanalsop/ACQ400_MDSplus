@@ -22,6 +22,22 @@ import numpy as np
 import argparse
 import MDSplus
 
+
+def make_sc_list(args):
+    # ch in 1.. (human)
+    if args.store_cols == 'none':
+        return list()
+    if args.store_cols == 'all':
+        return list(range(0,args.ncols))
+    elif len(args.store_cols.split(':')) > 1:
+        lr = args.store_cols.split(':')
+        x1 = 1 if lr[0] == '' else int(lr[0])
+        x2 = args.ncols+1 if lr[1] == '' else int(lr[1])+1
+        return list(range(x1, x2))
+    else:
+        return args.store_cols.split(',')
+
+
 def do_tlatch_report(tla, verbose):
     t0 = 0;
     errors = 0
@@ -46,7 +62,10 @@ def do_tlatch_report(tla, verbose):
                 
 def mds_put_slice(args):
     if args.store_cols == ':':
-	store_cols = range(0, args.ncols)
+        store_cols = range(0, args.ncols)
+    elif:
+        if args.store_cols.split(':')[1] != "":
+            store_cols = make_sc_list(args)
     else:
         store_cols = eval('('+args.store_cols+', )')
         try:
