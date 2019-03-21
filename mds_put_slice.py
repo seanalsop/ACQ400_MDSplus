@@ -63,8 +63,7 @@ def do_tlatch_report(tla, verbose):
 def mds_put_slice(args):
     if args.store_cols == ':':
         store_cols = range(0, args.ncols)
-    elif:
-        if args.store_cols.split(':')[1] != "":
+    elif args.store_cols.split(':')[1] != "":
             store_cols = make_sc_list(args)
     else:
         store_cols = eval('('+args.store_cols+', )')
