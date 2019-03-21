@@ -26,11 +26,11 @@ def path_check(tname):
     tpath = "{}/{}".format(root, tname)
     mpath = os.getenv(key, "notfound")
     if mpath == "notfound":
-        print("run as root:")
-        print('echo "{} {}" | sudo tee -a {}'.
+        print("Run the following command:")
+        print('echo "{} {}" | sudo tee -a {} \n'.
 		format(key, tpath, "/usr/local/mdsplus/local/envsyms"))
-        print("# for immediate use:")
-        print("export {}={}".format(key, tpath))
+        print("Then for immediate use please also use:")
+        print("export {}={} \n".format(key, tpath))
 	print("then run the command again please")
 	exit(1)
     
