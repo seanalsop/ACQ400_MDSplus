@@ -11,8 +11,8 @@ idcal   = ("7.109e-8", "1.8626e-9", "4.550e-6" )
 
 def add_ohmic_heating(module, modpath):
     # for num, ch in enumerate(range(3, 24+1, 3)):
-    for bc in range(1, 8+1): # bolo channel
-        rc = 3*bc
+    for bc in range(1, 8+1): 	# bolo channel
+        rc = 3*bc		# raw channel
         # add the Ioh and Voh data.
         cooked = module.addNode("VOH_%d" % bc, "SIGNAL")
         expr = "(%s.CH%02d & 65535) * 2.604e-6" % (modpath, rc)
