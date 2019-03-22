@@ -22,7 +22,7 @@ def add_ohmic_heating(module, modpath):
         expr = "%s.CH%02d / 65536 * 3.05e-5" % (modpath, rc)
         print expr
         cooked.putData(Data.compile(expr))
-        return None
+    return None
 
 
 def run_make_acqtree(args):
