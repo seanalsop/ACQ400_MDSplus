@@ -9,6 +9,20 @@ idunits = ("V", "rad", "W")
 idcal   = ("7.109e-8", "1.8626e-9", "4.550e-6" )
 
 
+def add_ohmic_heating(module, modpath):
+        for num, ch in enumerate(range(3, 24+1, 3)):
+                # add the Ioh and Voh data.
+                cooked = module.addNode("VOH_%d" % num, "SIGNAL")
+                expr = "(%s.CH%02d & 65535) * 2.604e-6" % (modpath, ch)
+                print expr
+                cooked.putData(Data.compile(expr))
+                cooked = module.addNode("IOH_%d" % num, "SIGNAL")
+                expr = "%s.CH%02d / 65536 * 3.05e-5" % (modpath, ch)
+                print expr
+                cooked.putData(Data.compile(expr))
+        return None
+
+
 def run_make_acqtree(args):
 	return_val = os.system('python make_acqtree.py {}'.format(args.tree[0]))
 	if return_val != 0:
@@ -36,7 +50,9 @@ def make_bolo_tree(args):
 			print(expr)
 			cooked.putData(Data.compile(expr))
 			cooked.setUnits(idunits[id])
+		add_ohmic_heating(module, modpath)
 	tree.write()
+
 
 def run_main():
 	parser = argparse.ArgumentParser(description="make_bolo_tree")
@@ -44,6 +60,7 @@ def run_main():
 	parser.add_argument('tree', nargs=1, help = "tree name")
 	make_bolo_tree(parser.parse_args())
 # execution starts here
+
 
 if __name__ == '__main__':
     run_main()
