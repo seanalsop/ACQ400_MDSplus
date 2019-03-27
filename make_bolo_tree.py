@@ -61,8 +61,8 @@ def make_bolo_tree(args):
 			cooked.setUnits(idunits[id])
 		add_ohmic_heating(module, modpath)
 	tree.write()
-    run_new_shot(args)
-
+	run_new_shot(args)
+	return None
 
 def run_main():
 	parser = argparse.ArgumentParser(description="make_bolo_tree")
