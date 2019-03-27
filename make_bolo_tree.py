@@ -32,6 +32,13 @@ def run_make_acqtree(args):
 	else:
 		return None
 
+def run_new_shot(args):
+	return_val = os.system('python new_shot {}'.format(args.tree[0]))
+	if return_val != 0:
+		exit()
+	else:
+		return None
+
 
 def make_bolo_tree(args):
 	run_make_acqtree(args)
@@ -54,7 +61,8 @@ def make_bolo_tree(args):
 			cooked.setUnits(idunits[id])
 		add_ohmic_heating(module, modpath)
 	tree.write()
-
+	run_new_shot(args)
+	return None
 
 def run_main():
 	parser = argparse.ArgumentParser(description="make_bolo_tree")
