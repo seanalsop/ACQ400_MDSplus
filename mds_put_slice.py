@@ -3,21 +3,21 @@
 """
 mds_put_slice store slice[s] of a 2D array to mdsplu
 example
-./mds_put_slice.py --ncols 112 --dtype np.uint32 \      
+./mds_put_slice.py --ncols 112 --dtype np.uint32 \
         --store_cols 97,98,99 --node_name "CH%02d" \
         --default_node ST \
         acq2106_076 \
         PROJECTS/AFHBA404/LLCONTROL/afhba.0.log
 
 eg:
-    raw file is 112 cols uint32 wide 
+    raw file is 112 cols uint32 wide
     store cols 97.98.99 to node CH01 .. CH03
     under default node ST
     in tree acq2106_076
     raw data afhba.0.log
 """
 
-#import acq400_hapi
+import acq400_hapi
 import numpy as np
 import argparse
 import MDSplus
@@ -42,9 +42,9 @@ def do_tlatch_report(tla, verbose):
     t0 = 0;
     errors = 0
     errmax = 0
-   
+
     if verbose:
-        print("do_tlatch_report {}".format(tla)) 
+        print("do_tlatch_report {}".format(tla))
     for tt in tla:
         if tt != t0+1:
             if verbose > 1:
@@ -53,7 +53,7 @@ def do_tlatch_report(tla, verbose):
             if tt - t0 > errmax:
                 errmax = tt - t0
         t0 = tt
-        
+
     if errors:
         print("SUMMARY: errors %d maxerr %d" % (errors, errmax))
     ll = len(tla)
@@ -82,7 +82,7 @@ def mds_put_slice(args):
         except TypeError:
             print "TypeError add brackets"
             store_cols = ( store_cols, )
-        
+
     with open(args.file[0], 'r') as fp:
         raw = np.fromfile(fp, dtype=eval(args.dtype))
     nsam = len(raw)/args.ncols
@@ -97,13 +97,13 @@ def mds_put_slice(args):
     if args.upload_cal_data == 1:
         cols = apply_cal_data(args, cols)
 
-    
-    tree = MDSplus.Tree(args.tree[0], 0)    
+    tree = MDSplus.Tree(args.tree[0], 0)
     iout = 1
     if args.tlatch_report:
         cols[:,1] = do_tlatch_report(cols[:,store_cols[0]], args.tlatch_report)
 
     for sc in store_cols:
+        print args.node_name % iout
         node_name = args.node_name % (iout)
         if args.default_node:
             node = tree.getNode("%s.%s" % (args.default_node, node_name))
@@ -127,6 +127,8 @@ def run_main():
     parser.add_argument('--node_name', type=str, help="node name %d format accepted")
     parser.add_argument('--default_node', type=str, help="default node")
     parser.add_argument('--tlatch_report', type=int, default=0, help="1: brief tlatch check, 2: detail tlatch check")
+    parser.add_argument('--upload_cal_data', type=int, default=0,
+    help="Whether or not the data should be scaled by the calibration parameters.")
     parser.add_argument('tree', nargs=1, help="tree name")
     parser.add_argument('file', nargs=1, help="file ")
     mds_put_slice(parser.parse_args())
@@ -135,5 +137,3 @@ def run_main():
 
 if __name__ == '__main__':
     run_main()
-
-
