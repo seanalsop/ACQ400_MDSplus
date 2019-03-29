@@ -58,8 +58,18 @@ def do_tlatch_report(tla, verbose):
         print("SUMMARY: errors %d maxerr %d" % (errors, errmax))
     ll = len(tla)
     return np.concatenate((np.subtract(tla[1:ll], tla[0:ll-1]), [1]))
-                
-                
+
+
+def apply_cal_data(args, cols):
+    uut = acq400_hapi.Acq400(args.tree[0])
+    channel = 1
+    cols = cols.astype(np.float32)
+    for chan in range(1, args.ncols+1):
+        cols[channel - 1] = uut.chan2volts(channel, cols[channel - 1])
+        channel += 1
+    return cols
+
+
 def mds_put_slice(args):
     if args.store_cols == ':':
         store_cols = range(0, args.ncols)
@@ -84,6 +94,8 @@ def mds_put_slice(args):
     if args.shr != 0:
         cols = np.right_shift(cols, args.shr)
 
+    if args.upload_cal_data == 1:
+        cols = apply_cal_data(args, cols)
 
     
     tree = MDSplus.Tree(args.tree[0], 0)    
