@@ -35,7 +35,7 @@ def path_check(tname):
         elif os.path.isfile("/usr/local/mdsplus/etc/envsyms"):
             print("Then run the following command:")
             print('echo "{} {}" | sudo tee -a {} \n'.
-    		format(key, tpath, "/usr/local/mdsplus/etc/envsyms"))
+            format(key, tpath, "/usr/local/mdsplus/etc/envsyms"))
 	print("then run the command again please")
 	exit(1)
 
