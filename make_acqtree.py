@@ -28,7 +28,7 @@ def path_check(tname):
     if mpath == "notfound":
         print("Run the following command:")
         print('echo "{} {}" | sudo tee -a {} \n'.
-		format(key, tpath, "/usr/local/mdsplus/local/envsyms"))
+		format(key, tpath, "/usr/local/mdsplus/etc/envsyms"))
         print("Then for immediate use please also use:")
         print("export {}={} \n".format(key, tpath))
 	print("then run the command again please")
