@@ -26,14 +26,19 @@ def path_check(tname):
     tpath = "{}/{}".format(root, tname)
     mpath = os.getenv(key, "notfound")
     if mpath == "notfound":
-        print("Run the following command:")
-        print('echo "{} {}" | sudo tee -a {} \n'.
-		format(key, tpath, "/usr/local/mdsplus/etc/envsyms"))
-        print("Then for immediate use please also use:")
+        print("For immediate use please use:")
         print("export {}={} \n".format(key, tpath))
+        if os.path.isfile("/usr/local/mdsplus/local/envsyms"):
+            print("Then run the following command:")
+            print('echo "{} {}" | sudo tee -a {} \n'.
+            format(key, tpath, "/usr/local/mdsplus/local/envsyms"))
+        elif os.path.isfile("/usr/local/mdsplus/etc/envsyms"):
+            print("Then run the following command:")
+            print('echo "{} {}" | sudo tee -a {} \n'.
+    		format(key, tpath, "/usr/local/mdsplus/etc/envsyms"))
 	print("then run the command again please")
 	exit(1)
-    
+
     if not os.path.exists(root):
         print('mkdir {}'.format(root))
 	exit(1)
@@ -43,13 +48,13 @@ def path_check(tname):
 	exit(1)
     else:
         os.mkdir(tpath)
-    
+
 
 def make_acqtree(args):
     tname = args.tree[0]
     path_check(tname)
     tree = MDSplus.Tree(tname, -1, "NEW")
-   
+
     if args.aichan >= 0:
 	make_chan(tree, args.aichan, "AI")
     if args.aochan >= 0:
@@ -66,7 +71,7 @@ def int_or_raw(value):
 	return 0
     else:
         return int(value)
-        
+
 def run_main():
     parser = argparse.ArgumentParser(description="make_acqtree")
     parser.add_argument('--aichan', default=-1, type=int_or_raw, help='ai channel count')
