@@ -9,19 +9,19 @@ idunits = ("V", "rad", "W")
 idcal   = ("7.109e-8", "1.8626e-9", "4.550e-6" )
 
 
-def add_ohmic_heating(module, modpath):
+def add_ohmic_heating(module, modpath, tree):
     # for num, ch in enumerate(range(3, 24+1, 3)):
-    for bc in range(1, 8+1): 	# bolo channel
-        rc = 3*bc		# raw channel
+    for bc in range(1, 8+1): # bolo channel
+        rc = 3*bc            # raw channel
         # add the Ioh and Voh data.
         cooked = module.addNode("VOH_%d" % bc, "SIGNAL")
         expr = "(%s.CH%02d & 65535) * 2.604e-6" % (modpath, rc)
         print expr
-        cooked.putData(Data.compile(expr))
+        cooked.putData(tree.tdiCompile(expr))
         cooked = module.addNode("IOH_%d" % bc, "SIGNAL")
         expr = "%s.CH%02d / 65536 * 3.05e-5" % (modpath, rc)
         print expr
-        cooked.putData(Data.compile(expr))
+        cooked.putData(tree.tdiCompile(expr))
     return None
 
 
@@ -42,6 +42,7 @@ def run_new_shot(args):
 
 def make_bolo_tree(args):
 	run_make_acqtree(args)
+
 	tree = Tree(args.tree[0], -1, "NEW")
 
 	for site in range(1, args.bolo8_count+1):
@@ -57,9 +58,11 @@ def make_bolo_tree(args):
 			cooked = module.addNode(idnames[id] % (bchan), "SIGNAL")
 			expr = "%s.%s * %s" % (modpath, rawname, idcal[id])
 			print(expr)
-			cooked.putData(Data.compile(expr))
+			cooked = tree.getNode(cooked)
+			expr = tree.tdiCompile(expr)
+			cooked.putData(expr)
 			cooked.setUnits(idunits[id])
-		add_ohmic_heating(module, modpath)
+		add_ohmic_heating(module, modpath, tree)
 	tree.write()
 	run_new_shot(args)
 	return None
