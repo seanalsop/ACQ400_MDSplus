@@ -48,7 +48,7 @@ then
     echo "If you want to reinstall the patch then please delete this directory and run this script again."
 else
     echo "Patching in the acq400 devices into /usr/local/mdsplus/pydevices/"
-    cp -r ~/PROJECTS/ACQ400_MDSPLUS/pydevices/acq400Devices/ /usr/local/mdsplus/pydevices/
+    sudo cp -r ~/PROJECTS/ACQ400_MDSPLUS/pydevices/acq400Devices/ /usr/local/mdsplus/pydevices/
 fi
 
 
@@ -58,7 +58,7 @@ then
     echo "HAPI already copied to mdsplus."
 else
     echo "Copying HAPI into /usr/local/mdsplus/pydevices/acq400Devices/"
-    cp -r ~/PROJECTS/acq400_hapi/acq400_hapi/ /usr/local/mdsplus/pydevices/acq400Devices/
+    sudo cp -r ~/PROJECTS/acq400_hapi/acq400_hapi/ /usr/local/mdsplus/pydevices/acq400Devices/
 fi
 
 
