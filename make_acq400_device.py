@@ -22,18 +22,15 @@ def make_device(tname, args):
     carrier_type = args.tree[0][0:7]
 
     model = "{}_{}_{}".format(carrier_type, args.model, nchan) # e.g. acq2106_32_tr
-    print(model)
     tree.addDevice(args.name, model)
     tree.write()
+    
     tree = MDSplus.Tree(tname, -1, "EDIT")
+
     # Change node name to tree name
-    #getattr(tree, args.name).node.putData(args.tree)
     node = tree.getNode(args.name).getNode("node")
 
-    print(node.getData().data())
     node.putData(str(args.tree[0]))
-    print(node.getData().data())
-
 
     # Create pulse 0.
     tree.createPulse(1)
@@ -46,6 +43,7 @@ def main():
     tname = args.tree[0]
     make_acqtree.path_check(tname)
     make_device(tname, args)
+    print("Device created.")
     return None
 
 
