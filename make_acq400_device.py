@@ -33,8 +33,9 @@ def make_device(tname, args):
     node.putData(str(args.tree[0]))
 
     # Create pulse 0.
-    tree.createPulse(1)
-    tree.setCurrent(1)
+    MDSplus.Tree.setCurrent(tname, 1)
+    MDSplus.Tree(tname, -1).createPulse(1)
+    tree.write()
     return None
 
 
