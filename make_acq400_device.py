@@ -50,7 +50,7 @@ def make_device(tname, args):
     tree = MDSplus.Tree(tname, -1, "NEW")
     uut = acq400_hapi.Acq400(hostname)
     nchan = uut.nchan()
-    carrier_type = uut.s0.MODEL # Checks whether we're creating a device for acq1001 or acq2106.
+    carrier_type = uut.s0.MODEL[0:7] # Checks whether we're creating a device for acq1001 or acq2106.
 
     model = "{}_{}_{}".format(carrier_type, args.model, nchan) # e.g. acq2106_32_tr for 32 channel acq2106 in transient capture mode.
     tree.addDevice(args.name, model)
