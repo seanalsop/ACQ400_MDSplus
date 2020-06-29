@@ -56,7 +56,6 @@ def make_device(tname, args):
     carrier_type = uut.s0.MODEL[0:7] # Checks whether we're creating a device for acq1001 or acq2106.
 
     model = "{}_{}_{}".format(carrier_type, args.model, nchan) # e.g. acq2106_32_tr for 32 channel acq2106 in transient capture mode.
-    print("model: {}".format(model))
     tree.addDevice(args.name, model)
     tree.write()
 
