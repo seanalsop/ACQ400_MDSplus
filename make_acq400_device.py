@@ -16,23 +16,24 @@ to communicate with the acq400 series device:
 
 
 import MDSplus
-import make_acqtree # want to use path_check function.
+import make_acqtree  # want to use path_check function.
 import acq400_hapi
 import argparse
 
 
 def get_args():
-    parser = argparse.ArgumentParser(description="make_acqtree with MDSplus device support.")
+    parser = argparse.ArgumentParser(
+        description="make_acqtree with MDSplus device support.")
 
     parser.add_argument('--model', default='tr', type=str,
-    help='One of: tr, st or mr (transient, streaming or multi-rate).')
+                        help='One of: tr, st or mr (transient, streaming or multi-rate).')
 
     parser.add_argument('--name', default='default', type=str,
-    help='Desired name of MDSplus device. This is what the device will be referred to as in MDSplus.')
+                        help='Desired name of MDSplus device. This is what the device will be referred to as in MDSplus.')
 
     parser.add_argument('--hostname', default='default', type=str,
-    help='Hostname of acq400 device. If using DNS AND you want to use the hostname as the tree name ' \
-    'then leave this blank, else use IP address or other DNS hostname.')
+                        help='Hostname of acq400 device. If using DNS AND you want to use the hostname as the tree name '
+                        'then leave this blank, else use IP address or other DNS hostname.')
 
     parser.add_argument('tree', nargs=1, help="tree name (UUT name)")
     return parser.parse_args()
@@ -50,9 +51,11 @@ def make_device(tname, args):
     tree = MDSplus.Tree(tname, -1, "NEW")
     uut = acq400_hapi.Acq400(hostname)
     nchan = uut.nchan()
-    carrier_type = uut.s0.MODEL[0:7] # Checks whether we're creating a device for acq1001 or acq2106.
+    # Checks whether we're creating a device for acq1001 or acq2106.
+    carrier_type = uut.s0.MODEL[0:7]
 
-    model = "{}_{}_{}".format(carrier_type, args.model, nchan) # e.g. acq2106_32_tr for 32 channel acq2106 in transient capture mode.
+    # e.g. acq2106_32_tr for 32 channel acq2106 in transient capture mode.
+    model = "{}_{}_{}".format(carrier_type, args.model, nchan)
     tree.addDevice(args.name, model)
     tree.write()
 
@@ -80,4 +83,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
