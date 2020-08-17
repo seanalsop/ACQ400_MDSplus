@@ -19,7 +19,10 @@ import MDSplus
 import make_acqtree  # want to use path_check function.
 import acq400_hapi
 import argparse
-
+import subprocess
+import datetime
+import os.path
+import getpass
 
 def get_args():
     parser = argparse.ArgumentParser(
@@ -72,11 +75,27 @@ def make_device(tname, args):
     return None
 
 
+def create_readme(tname):
+    user = getpass.getuser()
+    tree_dir = os.path.expanduser("~") + "/TREES/{}/README.txt".format(tname)
+
+    readme_string = "README file for the creation of tree: {}\n".format(tname)
+    readme_string += "Command line arguments:\n"
+    readme_string += " ".join(sys.argv)
+    readme_string += "\nThe script was run at date: {} by user: {}\n".format(datetime.datetime.now(), user)
+    readme_string += subprocess.check_output(["git", "log"]).strip().split("\n")[0] + "\n"
+    f = open(tree_dir, "a")
+    f.write(readme_string)
+    f.close()
+    return None
+
+
 def main():
     args = get_args()
     tname = args.tree[0]
     make_acqtree.path_check(tname)
     make_device(tname, args)
+    create_readme(tname)
     print("Device created.")
     return None
 
