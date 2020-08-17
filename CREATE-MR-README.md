@@ -39,10 +39,6 @@ This will print some messages about how MDSplus needs the user to add informatio
 
     for uut in {201..226}; do echo "acq2106_${uut}_path /home/dt100/TREES/acq2106_${uut}" | sudo tee -a /usr/local/mdsplus/local/envsyms; export acq2106_${uut}_path=/home/dt100/TREES/acq2106_$uut; python3 ./make_acq400_device.py --model=mr --name=TRANSIENT1 --nchan=48 acq2106_${uut}; done
 
-Once the device has been created the user can then control the system from jTraverser. The system can be initialized (using sync_role) as shown below:
-![enter image description here](https://user-images.githubusercontent.com/36033499/90390074-9f3a7480-e082-11ea-882f-cf2f69145d14.png)
-and can then be armed as shown below:
-![enter image description here](https://user-images.githubusercontent.com/36033499/90390081-a3669200-e082-11ea-838b-b99907cdbd83.png)
 
 ## Viewing data using jScope
 
