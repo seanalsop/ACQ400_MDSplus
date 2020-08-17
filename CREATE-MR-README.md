@@ -28,6 +28,7 @@ To do this the user should use the following script to automatically clone the c
 
 ### If you want to use the mdsplus-alpha repo
 If you install the mdsplus-alpha repo then there are no extra steps. You already have the device code.
+NB: this means you have the bleeding edge MDSplus code, but perhaps older D-TACQ code. In this case, we'd recommend replacing the mdsplus-alpha pydevices/acq400Devices directory with the corresponding directory from https://github.com/D-TACQ/ACQ400_MDSPLUS.git
 
 ## Installing a tree with a new MDSplus device node
 
