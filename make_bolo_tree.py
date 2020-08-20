@@ -14,11 +14,11 @@ def add_ohmic_heating(module, modpath, tree):
     for bc in range(1, 8+1):  # bolo channel
         rc = 3*bc            # raw channel
         # add the Ioh and Voh data.
-        cooked = module.addNode("VOH_%d" % bc, "SIGNAL")
+        cooked = module.addNode("IOH_%d" % bc, "SIGNAL")
         expr = "(%s.CH%02d & 65535) * 2.604e-6" % (modpath, rc)
         print expr
         cooked.putData(tree.tdiCompile(expr))
-        cooked = module.addNode("IOH_%d" % bc, "SIGNAL")
+        cooked = module.addNode("VOH_%d" % bc, "SIGNAL")
         expr = "%s.CH%02d / 65536 * 3.05e-5" % (modpath, rc)
         print expr
         cooked.putData(tree.tdiCompile(expr))
