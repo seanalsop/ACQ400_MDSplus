@@ -40,9 +40,9 @@ def create_new_jscp(args, text):
     text += "Scope.plot_1_1.num_shot: 1\n"
 
     text = text.replace("Scope.rows_in_column_2: 1",
-                        "Scope.rows_in_column_2: {}".format(LHS))
+                        "Scope.rows_in_column_2: {}".format(RHS))
     text = text.replace("Scope.rows_in_column_1: 1",
-                        "Scope.rows_in_column_1: {}".format(RHS))
+                        "Scope.rows_in_column_1: {}".format(LHS))
     text = text.replace("Scope.plot_1_1.num_expr: 0",
                         "Scope.plot_1_1.num_expr: 1")
     text = text.replace("Scope.plot_1_1.global_defaults: -1",
