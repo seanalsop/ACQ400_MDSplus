@@ -1,5 +1,9 @@
 #!/usr/bin/python3
 
+"""
+Example:
+./jscope-flare-gen.py --LHS="$LHS" --RHS="$RHS" $UUTS > ~/jScope/configurations/FLARE_2COL.jscp
+"""
 
 import MDSplus
 import argparse
