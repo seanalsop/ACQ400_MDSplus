@@ -8,6 +8,8 @@ import os
 
 def get_args():
     parser = argparse.ArgumentParser(description="jScope file creator.")
+    parser.add_argument('--LHS', default="default", type=str, help="")
+    parser.add_argument('--RHS', default="default", type=str, help="")
     parser.add_argument('uuts', nargs='+', help="uut list")
     return parser.parse_args()
 
@@ -25,14 +27,18 @@ def get_default_jscp():
 def create_new_jscp(args, text):
     col = 1
     new_text = ""
+
+    LHS = len(args.LHS) if args.LHS != "default" else len(args.uuts) - len(args.uuts)//2
+    RHS = len(args.RHS) if args.RHS != "default" else len(args.uuts)//2
+
     text += "Scope.plot_1_1.x_expr_1: \TOP:TRANSIENT1:TB_NS\n"
     text += "Scope.plot_1_1.y_expr_1: \TOP:TRANSIENT1:INPUT_001:CAL_INPUT\n"
     text += "Scope.plot_1_1.num_shot: 1\n"
 
     text = text.replace("Scope.rows_in_column_2: 1",
-                        "Scope.rows_in_column_2: {}".format(len(args.uuts)//2))
+                        "Scope.rows_in_column_2: {}".format(LHS))
     text = text.replace("Scope.rows_in_column_1: 1",
-                        "Scope.rows_in_column_1: {}".format(len(args.uuts) - len(args.uuts)//2))
+                        "Scope.rows_in_column_1: {}".format(RHS))
     text = text.replace("Scope.plot_1_1.num_expr: 0",
                         "Scope.plot_1_1.num_expr: 1")
     text = text.replace("Scope.plot_1_1.global_defaults: -1",
@@ -68,6 +74,9 @@ def create_new_jscp(args, text):
 def main():
     args = get_args()
     text = get_default_jscp()
+    if not args.LHS == "default" and not args.RHS == "default":
+        args.LHS = args.LHS.split(" ")
+        args.RHS = args.RHS.split(" ")
     create_new_jscp(args, text)
 
 
