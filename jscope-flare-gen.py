@@ -55,7 +55,7 @@ def create_new_jscp(args, text):
 
     row = 0
     for num, uut in enumerate(args.uuts):
-        if num == LHS-1:
+        if num == LHS:
             col = 2
             row = 0
 
